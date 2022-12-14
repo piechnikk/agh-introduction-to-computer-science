@@ -4,17 +4,20 @@
 # polu startowym i ostatnim także wliczamy do kosztu przejścia.
 
 
-def king(T, k, cost=0):
-    cost += T[0][k]
-    if len(T) == 1:
-        return cost
+import math
 
-    if k > 0 and k < len(T) - 1:
-        return (
-            king(T[1 : len(T) + 1], k - 1, cost)
-            or king(T[1 : len(T) + 1], k, cost)
-            or king(T[1 : len(T) + 1], k + 1, cost)
-        )
+
+def king(T, k, w=0, cost=0):
+    if w == len(T) - 1:
+        return cost + T[w][k]
+    val1 = king(T, k, w + 1, cost + T[w][k])
+    val2 = val3 = math.inf
+    if k > 0:
+        val2 = king(T, k - 1, w + 1, cost + T[w][k])
+    if k < len(T) - 1:
+        val3 = king(T, k + 1, w + 1, cost + T[w][k])
+
+    return min(val1, val2, val3)
 
 
 T = [
